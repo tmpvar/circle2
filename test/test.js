@@ -120,9 +120,23 @@ describe('circle2', function() {
       var circle  = new Circle(Vec2(0, 0), 10);
       ok(!circle.containsPoint(Vec2(10, 10)));
     });
+
+    it('should handle an array', function() {
+      var circle  = new Circle(Vec2(0, 0), 10);
+      ok(circle.containsPoint([10, 0]));
+      ok(!circle.containsPoint([10, 100]));
+    })
+
   });
 
   describe('#contains', function() {
+    it('should return false immediately on invalid thing', function() {
+      var c  = new Circle(Vec2(0, 0), 10);
+      ok(!c.contains());
+      ok(!c.contains(null));
+    });
+
+
     it('should detect concentric circles', function() {
       var c  = new Circle(Vec2(0, 0), 10);
       var c2  = new Circle(Vec2(0, 0), 11);
@@ -140,7 +154,7 @@ describe('circle2', function() {
     });
 
 
-    it('should handle polygon-like things', function() {
+    it('should handle polygon-like things (points function)', function() {
 
       var p = {
         points : function() {
@@ -153,16 +167,11 @@ describe('circle2', function() {
         }
       };
 
-      var c  = new Circle(Vec2(0, 0), 10);
-      ok(c.contains(p));
-    });
-
-    it('should handle polygon-like things', function() {
-      var p = {
+      var p2 = {
         points : function() {
           return [
-            Vec2(10, 0),
-            Vec2(-11, 0),
+            Vec2(10, 100),
+            Vec2(-10, 0),
             Vec2(0, 10),
             Vec2(0, -10)
           ];
@@ -170,7 +179,93 @@ describe('circle2', function() {
       };
 
       var c  = new Circle(Vec2(0, 0), 10);
-      ok(!c.contains(p));
+      ok(c.contains(p));
+      ok(!c.contains(p2));
+    });
+
+    it('should handle polygon-like things (points array)', function() {
+
+      var p = {
+        points : [
+          Vec2(10, 0),
+          Vec2(-10, 0),
+          Vec2(0, 10),
+          Vec2(0, -10)
+        ]
+      };
+
+      var p2 = {
+        points : [
+          Vec2(10, 100),
+          Vec2(-10, 0),
+          Vec2(0, 10),
+          Vec2(0, -10)
+        ]
+      };
+
+      var c  = new Circle(Vec2(0, 0), 10);
+      ok(c.contains(p));
+      ok(!c.contains(p2));
+    });
+
+    it('should handle aabb-like things', function() {
+      var p = {
+        x1: -1,
+        y1: 0,
+        x2: 1,
+        y2: 0
+      };
+
+      var p2 = {
+        x1: -100,
+        y1: 0,
+        x2: 1,
+        y2: 0
+      };
+
+      var c  = new Circle(Vec2(0, 0), 10);
+      ok(c.contains(p));
+      ok(!c.contains(p2));
+    });
+
+    it('should handle rect-like things (.w/.h)', function() {
+      var p = {
+        x: -5,
+        y: -5,
+        w: 1,
+        h: 1
+      };
+
+      var p2 = {
+        x: 10,
+        y: 0,
+        w: 1,
+        h: 0
+      };
+
+      var c  = new Circle(Vec2(0, 0), 10);
+      ok(c.contains(p));
+      ok(!c.contains(p2));
+    });
+
+    it('should handle rect-like things (.w/.h)', function() {
+      var p = {
+        x: -5,
+        y: -5,
+        width: 1,
+        height: 1
+      };
+
+      var p2 = {
+        x: 10,
+        y: 0,
+        width: 1,
+        height: 0
+      };
+
+      var c  = new Circle(Vec2(0, 0), 10);
+      ok(c.contains(p));
+      ok(!c.contains(p2));
     });
 
   });

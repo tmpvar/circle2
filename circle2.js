@@ -2,18 +2,26 @@ if (typeof require !== 'undefined') {
   var Vec2 = require('vec2');
 }
 
-// TODO:
-//  - 2 point circles
-//  - 3 point circles
+var isArray = function (a) {
+  return Object.prototype.toString.call(a) === "[object Array]";
+}
+
+var isFunction = function(a) {
+  return typeof a === 'function';
+}
+
+var defined = function(a) {
+  return typeof a !== 'undefined';
+}
 
 function Circle(position, radius, last) {
   if (!(this instanceof Circle)) {
-    return new Circle(x, y);
+    return new Circle(position, radius, last);
   }
 
   this.position = position || new Vec2(0, 0);
   this.radius(radius || 1);
-  
+
   this.position.change(this.notify.bind(this));
   this._watchers = [];
 }
@@ -59,20 +67,37 @@ Circle.prototype.ignore = function(fn) {
 };
 
 Circle.prototype.containsPoint = function(vec) {
+  if (isArray(vec)) {
+    vec = Vec2.fromArray(vec);
+  }
+
+  vec = Vec2(vec);
   return this.position.subtract(vec, true).lengthSquared() <= this._radiusSquared;
 };
 
 Circle.prototype.contains = function(thing) {
 
+  if (!thing) {
+    return false;
+  }
+
   // Other circles
-  if (typeof thing.radius === 'function' && thing.position) {
+  if (isFunction(thing.radius) && thing.position) {
     if (thing.radius() < this._radius && this.containsPoint(thing.position)) {
       var radius = thing.radius();
       var distance =  thing.position.subtract(this.position).lengthSquared();
       return distance + radius*radius <= this._radiusSquared;
     }
-  } else if (typeof thing.points === 'function') {
-    var points = thing.points(), l = points.length;
+  } else if (typeof thing.points !== 'undefined') {
+
+    var points, l;
+    if (isFunction(thing.points)) {
+      points = thing.points();
+    } else if (isArray(thing.points)) {
+      points = thing.points;
+    }
+
+    l = points.length;
 
     for (var i=0; i<l; i++) {
       if (!this.containsPoint(points[i])) {
@@ -81,13 +106,34 @@ Circle.prototype.contains = function(thing) {
     }
 
     return true;
+  } else if (
+    defined(thing.x1) &&
+    defined(thing.x2) &&
+    defined(thing.y1) &&
+    defined(thing.y2)
+  ) {
+
+    return this.containsPoint(thing.x1, thing.y1) &&
+           this.containsPoint(thing.x2, thing.y2)
+
+  } else if (defined(thing.x) && defined(thing.y)) {
+
+    var x2, y2;
+
+    if (defined(thing.w) && defined(thing.h)) {
+      x2 = thing.x+thing.w;
+      y2 = thing.y+thing.h;
+    }
+
+    if (defined(thing.width) && defined(thing.height)) {
+      x2 = thing.x+thing.width;
+      y2 = thing.y+thing.height;
+    }
+
+    return this.containsPoint(thing.x1, thing.y1) && this.containsPoint(x2, y2);
   }
 
   return false;
-};
-
-Circle.prototype.containedBy = function(thing) {
-
 };
 
 if (typeof module !== "undefined" && typeof module.exports == "object") {
