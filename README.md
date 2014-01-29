@@ -97,6 +97,14 @@ __notify__()
 
 Force listeners to be called.
 
+__area__()
+
+Returns the area `PI * r^2`
+
+__circumference__()
+
+Returns the circumference `PI * r*2`
+
 ### license
 
 MIT (see: [license.txt](blob/master/license.txt))

@@ -267,6 +267,19 @@ describe('circle2', function() {
       ok(c.contains(p));
       ok(!c.contains(p2));
     });
-
   });
+
+  describe('#area', function() {
+    it('should return the correct area', function() {
+      var c = new Circle(null, 1);
+      ok(Number(c.area()).toFixed(2) === '3.14');
+    });
+  });
+
+  describe('#circumference', function() {
+    it('should return the correct value', function() {
+      var c = new Circle(null, 50);
+      ok(Number(c.circumference()).toFixed(2) === '314.16');
+    });
+  })
 });

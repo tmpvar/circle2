@@ -33,6 +33,14 @@ Circle.prototype._radiusSquared = 1;
 Circle.prototype.isCircle = true;
 Circle.prototype.position = null;
 
+Circle.prototype.area = function() {
+  return Math.PI * this._radiusSquared;
+}
+
+Circle.prototype.circumference = function() {
+  return Math.PI * (this._radius * 2);
+}
+
 Circle.prototype.radius = function(radius) {
   if (typeof radius !== 'undefined') {
     this._radius = Vec2.clean(radius);
