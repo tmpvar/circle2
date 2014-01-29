@@ -14,11 +14,15 @@
   },
   "devDependencies": {
     "mocha": "1.x",
-    "istanbul": "*"
+    "istanbul": "*",
+    "vec2": "~1.3.4"
   },
   "scripts": {
     "test": "node_modules/mocha/bin/mocha test/test.js -R spec",
     "cover": "istanbul cover _mocha -- test/test.js -R spec",
-    "minify": "browserify -e circle2.js | uglifyjs > circle2.js.min.js"
+    "minify": "browserify -e circle2.js | uglifyjs > circle2.min.js"
+  },
+  "peerDependencies": {
+    "vec2": "~1.3.4"
   }
 }
