@@ -1,6 +1,6 @@
 {
   "name": "circle2",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "2d circle implementation",
   "keywords": ["2d", "circle", "vec2"],
   "main": "circle2.js",

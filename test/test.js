@@ -145,6 +145,16 @@ describe('circle2', function() {
       ok(c2.contains(c));
     });
 
+    it('should not mutate either position', function() {
+      var c  = new Circle(Vec2(10, 10), 10);
+      var c2  = new Circle(Vec2(10, 10), 11);
+
+      ok(!c.contains(c2));
+      ok(c2.contains(c));
+      ok(c.position.equal(Vec2(10, 10)));
+      ok(c2.position.equal(Vec2(10, 10)));
+    });
+
     it('should detect offset circles', function() {
       var c  = new Circle(Vec2(6, 0), 5);
       var c2  = new Circle(Vec2(0, 0), 11);
@@ -152,7 +162,6 @@ describe('circle2', function() {
       ok(!c.contains(c2));
       ok(c2.contains(c));
     });
-
 
     it('should handle polygon-like things (points function)', function() {
 

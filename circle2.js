@@ -93,7 +93,7 @@ Circle.prototype.contains = function(thing) {
   if (isFunction(thing.radius) && thing.position) {
     if (thing.radius() < this._radius && this.containsPoint(thing.position)) {
       var radius = thing.radius();
-      var distance =  thing.position.subtract(this.position).lengthSquared();
+      var distance =  thing.position.subtract(this.position, true).lengthSquared();
       return distance + radius*radius <= this._radiusSquared;
     }
   } else if (typeof thing.points !== 'undefined') {
