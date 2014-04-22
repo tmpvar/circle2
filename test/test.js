@@ -290,5 +290,47 @@ describe('circle2', function() {
       var c = new Circle(null, 50);
       ok(Number(c.circumference()).toFixed(2) === '314.16');
     });
-  })
+  });
+
+  describe('#intersectCircle', function() {
+    it('returns false when no intersections', function() {
+      var c = Circle(Vec2(0, 0), 10);
+      var c2 = Circle(Vec2(21, 0), 10);
+      ok(!c.intersectCircle(c2));
+    });
+
+    it('returns false when one circle is contained', function() {
+      var c = Circle(Vec2(0, 0), 10);
+      var c2 = Circle(Vec2(0, 0), 20);
+      ok(!c.intersectCircle(c2));
+    });
+
+    it('returns [] when same circles', function() {
+      var c = Circle(Vec2(0, 0), 10);
+      var c2 = Circle(Vec2(0, 0), 10);
+      ok(c.intersectCircle(c2).length === 0);
+    });
+
+    it('returns [vec2] when intersects at one point', function() {
+      var c = Circle(Vec2(0, 0), 10);
+      var c2 = Circle(Vec2(20, 0), 10);
+      ok(c.intersectCircle(c2).equal(10, 0));
+    });
+
+    it('returns [vec2, vec2] when intersects at two points', function() {
+      var c = Circle(Vec2(0, 0), 10);
+      var c2 = Circle(Vec2(10, 0), 10);
+      var isect = c2.intersectCircle(c);
+      ok(isect);
+      ok(isect.length === 2);
+
+      isect.sort(function(a, b) {
+        return a-b;
+      });
+
+      ok(isect[0].equal(5, -8.66025404));
+      ok(isect[1].equal(5, 8.66025404));
+    });
+  });
+
 });

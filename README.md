@@ -33,7 +33,7 @@ Where `point` looks like one of the following:
  * `[0, 1]`
  * `{ x: 0, y: 1 }`
  * `new Vec2(0, 1)`
-  
+
 This function will return `true` if the passed point is inside or right on the boundary of the circle.
 
 ```javascript
@@ -91,7 +91,7 @@ __ignore__([fn])
 
 Takes an optional `fn` parameter which if passed will remove the specified listener.
 
-If no `fn` is passed, _all_ the listeners will be removed. 
+If no `fn` is passed, _all_ the listeners will be removed.
 
 __notify__()
 
@@ -104,6 +104,15 @@ Returns the area `PI * r^2`
 __circumference__()
 
 Returns the circumference `PI * r*2`
+
+__intersectCircle__(circle)
+
+Performs an intersection between this circle and the incoming. Results are as follows:
+
+ * `false` - no intersection or one circle is contained in the other
+ * `[]` - same circles
+ * `[Vec2]` - single intersection
+ * `[Vec2, Vec2]` - two intersection points
 
 ### license
 
