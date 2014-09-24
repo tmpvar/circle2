@@ -8,6 +8,7 @@ npm install circle2
 
 ## use
 
+
 new __Circle__([origin [, radius])
 
 Where `origin` adheres to the following form:
@@ -18,6 +19,38 @@ Where `origin` adheres to the following form:
 and `radius` is a number
 
 _Note:_ the arguments to the `Circle` function are optional. If none are passed `circle.position` will be `0, 0` and `circle.radius` will be `1`
+
+You can also pass in a 3 points and have the circle computed from them:
+
+```javascript
+
+var circle = Circle([
+  [0, 0],
+  [10, 0],
+  [0, 10]
+])
+
+console.log(circle.radius()); // 10
+console.log(circle.position); // { x: 0, y: 0 }
+
+```
+
+or an 3-item array of `Vec2`
+
+```javascript
+
+var circle = Circle([
+  Vec2(0, 0),
+  Vec2(10, 0),
+  Vec2(0, 10)
+])
+
+console.log(circle.radius()); // 10
+console.log(circle.position); // { x: 0, y: 0 }
+
+```
+
+_Note:_ changing the passed `Vec2`s will change the circle
 
 
 ### Instance Methods
