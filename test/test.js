@@ -8,6 +8,46 @@ test('Circle() takes a point and radius', function(t) {
   t.end();
 });
 
+test('Circle() takes 3 points (array)', function(t) {
+
+  var circle = new Circle([
+    [0, 10],
+    [10, 0],
+    [0, -10]
+  ]);
+
+  t.equal(circle.radius(), 10);
+  t.ok(circle.position.equal(Vec2(0, 0)));
+
+  t.end();
+});
+
+test('Circle() takes 3 points (Vec2)', function(t) {
+
+  var points = [
+    Vec2(0, 10),
+    Vec2(10, 0),
+    Vec2(0, -10)
+  ];
+
+  var circle = new Circle(points);
+
+  t.equal(circle.radius(), 10);
+  t.ok(circle.position.equal(Vec2(0, 0)));
+
+  points[0].set(0, 6);
+  points[1].set(6, 0);
+
+  circle.change(function() {
+    t.ok(circle.position.equal(Vec2(3, 3)));
+    t.equal(circle.radius(), 4.24264069);
+    t.end();
+  });
+
+  points[2].set(0, 0);
+
+});
+
 test('Circle() has sane defaults', function(t) {
   var circle = new Circle();
   t.ok(circle.position.equal(Vec2(0, 0)));

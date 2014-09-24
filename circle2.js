@@ -1,5 +1,6 @@
 if (typeof require !== 'undefined') {
   var Vec2 = require('vec2');
+  var circumcenter = require('circumcenter');
 }
 
 var isArray = function (a) {
@@ -19,11 +20,41 @@ function Circle(position, radius, last) {
     return new Circle(position, radius, last);
   }
 
-  this.position = position || new Vec2(0, 0);
-  this.radius(radius || 1);
+  if (isArray(position)) {
+
+    this.position = Vec2(0, 0);
+    var that = this;
+
+    function compute(points) {
+      var center = circumcenter(points);
+      that.position.set(center[0], center[1], false);
+      that.radius(that.position.distance(Vec2(points[0])));
+    }
+
+    function computeFromVec2Array() {
+      compute(position.map(function(v) {
+        return v.toArray();
+      }));
+    }
+
+    if (position[0] instanceof Vec2) {
+      computeFromVec2Array(position);
+      position.forEach(function(v) {
+        v.change(computeFromVec2Array);
+      });
+
+    } else {
+      compute(position);
+    }
+
+  } else {
+    this.position = position || new Vec2(0, 0);
+    this.radius(radius || 1);
+  }
 
   this.position.change(this.notify.bind(this));
   this._watchers = [];
+
 }
 
 Circle.prototype._watchers = [];
