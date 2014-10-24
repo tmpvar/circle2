@@ -147,6 +147,11 @@ Performs an intersection between this circle and the incoming. Results are as fo
  * `[Vec2]` - single intersection
  * `[Vec2, Vec2]` - two intersection points
 
+__toSegments__([segments])
+
+Convert this circle into a series of points representing the outline of this circle
+
+
 ### license
 
 MIT (see: [license.txt](blob/master/license.txt))
