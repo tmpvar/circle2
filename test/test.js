@@ -369,3 +369,9 @@ test('returns [vec2, vec2] when intersects at two points', function(t) {
   t.ok(isect[1].equal(5, 8.66025404));
   t.end();
 });
+
+test('toSegments (subdivide into segments)', function(t) {
+  var circle = Circle(Vec2(0, 0), 10);
+  t.equal(circle.toSegments(4).length, 4);
+  t.end();
+});

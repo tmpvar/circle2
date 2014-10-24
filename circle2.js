@@ -1,6 +1,7 @@
 if (typeof require !== 'undefined') {
   var Vec2 = require('vec2');
   var circumcenter = require('circumcenter');
+  var subdivideArc = require('subdivide-arc');
 }
 
 var isArray = function (a) {
@@ -215,6 +216,16 @@ Circle.prototype.intersectCircle = function(circle) {
     new Vec2(x0 + rx, y0 - ry),
     new Vec2(x0 - rx, y0 + ry)
   ];
+};
+
+Circle.prototype.toSegments = function(count) {
+  return subdivideArc(
+    this.position.x,
+    this.position.y,
+    this.radius(),
+    0, Math.PI * 2,
+    count || 100
+  );
 };
 
 
