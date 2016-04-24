@@ -12,6 +12,10 @@ var isFunction = function(a) {
   return typeof a === 'function';
 }
 
+var isNumber = function(a) {
+  return typeof a === 'number';
+}
+
 var defined = function(a) {
   return typeof a !== 'undefined';
 }
@@ -21,44 +25,59 @@ function Circle(position, radius, last) {
     return new Circle(position, radius, last);
   }
 
-  if (isArray(position)) {
-
-    this.position = Vec2(0, 0);
-    var that = this;
-
-    function compute(points) {
-      var center = circumcenter(points);
-      that.position.set(center[0], center[1], false);
-      that.radius(that.position.distance(Vec2(points[0])));
-    }
-
-    function computeFromVec2Array() {
-      compute(position.map(function(v) {
-        return v.toArray();
-      }));
-    }
-
-    if (position[0] instanceof Vec2) {
-      computeFromVec2Array(position);
-      position.forEach(function(v) {
-        v.change(computeFromVec2Array);
-      });
-
-    } else {
-      compute(position);
-    }
-
-  } else {
-    this.position = position || new Vec2(0, 0);
-    this.radius(radius || 1);
-  }
-
-  this.position.change(this.notify.bind(this));
   this._watchers = [];
 
+  this.init(position, radius, last)
+
+  this.position.change(this.notify.bind(this));
 }
 
-Circle.prototype._watchers = [];
+Circle.prototype.computeCenterFromPoints = function() {
+  var center = circumcenter(this.points.map(function(vec) {
+    return vec.toArray()
+  }));
+
+  this.position.set(center[0], center[1], false);
+  this.radius(this.position.distance(this.points[0]));
+}
+
+Circle.prototype.init = function(position, radius, last) {
+  this.radius(radius || 1)
+  this.position = new Vec2(0, 0)
+
+  if (!position) return
+
+  if (isArray(position)) {
+    if (isNumber(position[0])) {
+      this.position = new Vec2(position)
+    } else {
+      var boundCompute = this.computeCenterFromPoints.bind(this)
+      this.points = position.map(function(point) {
+        if (!(point instanceof Vec2)) {
+          point = Vec2(point);
+        }
+
+        // hookup listeners to recompute the origin + position
+        point.change(boundCompute);
+        return point
+      })
+
+      this.computeCenterFromPoints()
+
+
+    }
+    return // arrays have been handled
+  }
+
+  if (position instanceof Vec2) {
+    this.position = position
+    return // Vec2 case handled
+  }
+
+  this.position = new Vec2(position)
+}
+
+Circle.prototype._watchers = null;
 Circle.prototype._radius = 1;
 Circle.prototype._radiusSquared = 1;
 

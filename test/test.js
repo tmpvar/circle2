@@ -2,8 +2,20 @@ var Circle = require("../circle2.js");
 var Vec2 = require("vec2");
 var test = require('tape');
 
-test('Circle() takes a point and radius', function(t) {
+test('Circle() takes a point (Vec2) and radius', function(t) {
   var circle = new Circle(Vec2(0, 0), 10);
+  t.equal(circle.radius(), 10);
+  t.end();
+});
+
+test('Circle() takes a point (array) and radius', function(t) {
+  var circle = new Circle([0, 0], 10);
+  t.equal(circle.radius(), 10);
+  t.end();
+});
+
+test('Circle() takes a point (object) and radius', function(t) {
+  var circle = new Circle({ x:0, y:0 }, 10);
   t.equal(circle.radius(), 10);
   t.end();
 });
