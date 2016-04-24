@@ -187,6 +187,15 @@ test('contains() detects concentric circles', function(t) {
   t.end()
 });
 
+test('contains() detects nested circles', function(t) {
+  var c  = new Circle(Vec2(5, 5), 2);
+  var c2  = new Circle(Vec2(0, 0), 11);
+
+  t.ok(!c.contains(c2));
+  t.ok(c2.contains(c));
+  t.end()
+});
+
 test('contains() does not mutate', function(t) {
   var c  = new Circle(Vec2(10, 10), 10);
   var c2  = new Circle(Vec2(10, 10), 11);
