@@ -350,7 +350,7 @@ test('returns [] when same circles', function(t) {
 test('returns [vec2] when intersects at one point', function(t) {
   var c = Circle(Vec2(0, 0), 10);
   var c2 = Circle(Vec2(20, 0), 10);
-  t.ok(c.intersectCircle(c2).equal(10, 0));
+  t.ok(c.intersectCircle(c2)[0].equal(10, 0));
   t.end();
 });
 

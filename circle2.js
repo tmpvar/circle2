@@ -201,7 +201,7 @@ Circle.prototype.intersectCircle = function(circle) {
 
   // single intersection
   } else if (d2 === rsquared) {
-    return p1.subtract(p2, true).divide(2).add(p2);
+    return [p1.subtract(p2, true).divide(2).add(p2)];
   }
 
   var d = Math.sqrt(d2);
